@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 input;
     private bool isMoving = false;
     private bool isRunningCurrentStep = false;
+    public bool InputEnabled { get; set; } = true; 
 
     
    [Header("Animación")]
@@ -62,7 +63,7 @@ private void Update()
         Mover();
 
     // Si terminó la casilla (o ya estaba quieto), puede aceptar un nuevo paso
-    if (!isMoving && !(TimeManager.Instance != null && TimeManager.Instance.IsDayOver))
+    if (!isMoving && InputEnabled && !(TimeManager.Instance != null && TimeManager.Instance.IsDayOver))
     {
         LeerInput();
 

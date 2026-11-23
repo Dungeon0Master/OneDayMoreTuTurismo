@@ -66,6 +66,12 @@ public class TimeManager : MonoBehaviour
         }
     }
 
+    public bool HasTimeFor(int minutes)
+    {
+        return currentTotalMinutes + minutes <= endTotalMinutes;
+    }
+   
+
     private void NotifyTimeChanged()
     {
         int hours = currentTotalMinutes / 60;

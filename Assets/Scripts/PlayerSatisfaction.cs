@@ -25,11 +25,8 @@ public class PlayerSatisfaction : MonoBehaviour
     // Devuelve cuántos puntos ganó realmente.
     public int AddFromPlace(PlaceInfo info)
     {
-        float multiplier = GameSession.Archetype.GetMultiplier(info.Categories);
-        int gained = Mathf.RoundToInt(info.Satisfaction * multiplier);
+        int gained = GameSession.Archetype.CalculateSatisfaction(info);
         Add(gained);
         return gained;
     }
-
-  
 }

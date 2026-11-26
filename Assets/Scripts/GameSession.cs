@@ -7,6 +7,9 @@ public static class GameSession
 
     public static string ArchetypeId { get; private set; } = DefaultArchetypeId;
 
+    // true cuando ya se eligió un arquetipo (desde el menú o el selector de pruebas)
+    public static bool HasSelection { get; private set; }
+
     public static ArchetypeInfo Archetype
     {
         get
@@ -26,6 +29,8 @@ public static class GameSession
             Debug.LogError($"[GameSession] El arquetipo '{id}' no existe en ArchetypeCatalog.");
             return;
         }
+
         ArchetypeId = id;
+        HasSelection = true;
     }
-} 
+}

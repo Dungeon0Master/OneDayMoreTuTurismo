@@ -15,6 +15,6 @@ public class Kiosk : MonoBehaviour, IInteractable
             return;
         }
 
-        KioskMapUI.Instance.Open(player);
+        KioskMapUI.Instance.OpenFromKiosk(player);
     }
 }

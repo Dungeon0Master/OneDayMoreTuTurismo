@@ -9,6 +9,7 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private PlayerMoney playerMoney;
     [SerializeField] private PlayerSatisfaction playerSatisfaction;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerApp playerApp;
     [SerializeField] private PlaceInfoPanel panel;
 
     private IInteractable current;
@@ -17,6 +18,7 @@ public class PlayerInteractor : MonoBehaviour
     public PlayerMoney Money => playerMoney;
     public PlayerSatisfaction Satisfaction => playerSatisfaction;
     public PlayerController Controller => playerController;
+    public PlayerApp App => playerApp;
     public PlaceInfoPanel Panel => panel;
 
     private void Awake()
@@ -27,6 +29,11 @@ public class PlayerInteractor : MonoBehaviour
             playerSatisfaction = GetComponent<PlayerSatisfaction>();
         if (playerController == null)
             playerController = GetComponent<PlayerController>();
+        if (playerApp == null)
+            playerApp = GetComponent<PlayerApp>();
+
+        if (playerApp == null)
+            Debug.LogError("[PlayerInteractor] Falta el componente PlayerApp en el jugador.", this);
     }
 
     private void Start()

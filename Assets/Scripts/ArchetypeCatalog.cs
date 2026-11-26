@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ArchetypeInfo
 {
@@ -23,6 +24,10 @@ public class ArchetypeInfo
             if (value > best) best = value;
         }
         return best;
+    }
+        public int CalculateSatisfaction(PlaceInfo info)
+    {
+        return Mathf.RoundToInt(info.Satisfaction * GetMultiplier(info.Categories));
     }
 }
 
@@ -60,18 +65,6 @@ public static class ArchetypeCatalog
             StartingMoney = 100,
             Multipliers = new Dictionary<PlaceCategory, float>(),
         }},
-        { "DeNegocios", new ArchetypeInfo {
-            DisplayName = "De negocios",
-            Description = "Llegar a un evento fijo a una hora exacta.",
-            StartingMoney = 300,
-            Multipliers = new Dictionary<PlaceCategory, float>(),
-        }},
-        { "DeExcursion", new ArchetypeInfo {
-            DisplayName = "De excursión",
-            Description = "Ruta de un punto A a un punto B antes de las 20:00.",
-            StartingMoney = 50,
-            Multipliers = new Dictionary<PlaceCategory, float>(),
-        }},
         { "Historiador", new ArchetypeInfo {
             DisplayName = "Historiador",
             Description = "Historia y, en segundo lugar, cultura.",
@@ -102,4 +95,6 @@ public static class ArchetypeCatalog
         }
         return archetypes.TryGetValue(id, out info);
     }
+    // Todos los arquetipos, para armar el menú de selección
+     public static IEnumerable<KeyValuePair<string, ArchetypeInfo>> All => archetypes;
 }

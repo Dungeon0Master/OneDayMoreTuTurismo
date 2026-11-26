@@ -24,11 +24,25 @@ public class Place : MonoBehaviour, IInteractable
     public bool CanUse => !(singleUse && used);
     public Vector3 MapPosition => mapAnchor != null ? mapAnchor.position : transform.position;
 
-    private void Awake()
-    {
-        if (!PlaceCatalog.TryGet(placeId, out info))
-            Debug.LogError($"[Place] '{name}' tiene el Id '{placeId}', que no existe en PlaceCatalog.", this);
-    }
+private void Awake()
+{
+    // Las carpas se crean sin Id y lo reciben después con Initialize()
+    if (!string.IsNullOrEmpty(placeId))
+        ResolveInfo();
+}
+
+// Para lugares que se crean durante el juego (carpas aleatorias)
+public void Initialize(string id)
+{
+    placeId = id;
+    ResolveInfo();
+}
+
+private void ResolveInfo()
+{
+    if (!PlaceCatalog.TryGet(placeId, out info))
+        Debug.LogError($"[Place] '{name}' tiene el Id '{placeId}', que no existe en PlaceCatalog.", this);
+}
 
     private void OnEnable()
     {

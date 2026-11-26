@@ -8,7 +8,6 @@ public class PlaceInfoPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI timeText;
-
     [SerializeField] private TextMeshProUGUI messageText;
 
     [Header("Seguimiento")]
@@ -43,7 +42,7 @@ public class PlaceInfoPanel : MonoBehaviour
         nameText.text = info.DisplayName;
         descriptionText.text = info.Description;
         costText.text = info.Cost > 0 ? $"Costo: -${info.Cost}" : "Gratis";
-        timeText.text = info.TimeMinutes > 0 ? $"Tiempo: -{FormatTime(info.TimeMinutes)}" : "Sin gasto de tiempo";
+        timeText.text = info.TimeMinutes > 0 ? $"Tiempo: -{UIFormat.Minutes(info.TimeMinutes)}" : "Sin gasto de tiempo";
         messageText.text = message;
 
         UpdatePosition();
@@ -63,15 +62,5 @@ public class PlaceInfoPanel : MonoBehaviour
 
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(canvasRect, screenPoint, uiCamera, out Vector3 worldPoint))
             panelRect.position = worldPoint;
-    }
-
-    private static string FormatTime(int minutes)
-    {
-        int h = minutes / 60;
-        int m = minutes % 60;
-
-        if (h == 0) return $"{m} min";
-        if (m == 0) return $"{h} h";
-        return $"{h} h {m} min";
     }
 }

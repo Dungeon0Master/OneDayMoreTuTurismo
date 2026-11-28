@@ -7,6 +7,7 @@ public class PlayerInteractor : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField] private PlayerMoney playerMoney;
+    [SerializeField] private PlayerEnergy playerEnergy;
     [SerializeField] private PlayerSatisfaction playerSatisfaction;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerApp playerApp;
@@ -16,6 +17,7 @@ public class PlayerInteractor : MonoBehaviour
 
     public KeyCode InteractKey => interactKey;
     public PlayerMoney Money => playerMoney;
+    public PlayerEnergy Energy => playerEnergy;
     public PlayerSatisfaction Satisfaction => playerSatisfaction;
     public PlayerController Controller => playerController;
     public PlayerApp App => playerApp;
@@ -25,6 +27,8 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (playerMoney == null)
             playerMoney = GetComponent<PlayerMoney>();
+        if (playerEnergy == null)
+            playerEnergy = GetComponent<PlayerEnergy>();
         if (playerSatisfaction == null)
             playerSatisfaction = GetComponent<PlayerSatisfaction>();
         if (playerController == null)
@@ -65,5 +69,8 @@ public class PlayerInteractor : MonoBehaviour
         if (TimeManager.Instance != null && TimeManager.Instance.IsDayOver) return;
 
         current.Interact(this);
+        if (current == null || !Input.GetKeyDown(interactKey)) return;
+        if (!playerController.InputEnabled) return;   
+        if (TimeManager.Instance != null && TimeManager.Instance.IsDayOver) return;
     }
 }

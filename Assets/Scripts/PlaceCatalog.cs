@@ -8,7 +8,7 @@ public class PlaceInfo
     public string DisplayName;
     public string Description;
     public int Cost;          // dinero que resta
-    public int Energia; // energía que resta o suma
+    public int Energy; // energía que resta o suma
     public int TimeMinutes;  // minutos que resta
     public int Satisfaction;  // puntos que suma
     public PlaceCategory [] Categories; // categoría del lugar
@@ -24,7 +24,7 @@ public static class PlaceCatalog
             DisplayName = "Museo",
             Description = "Exposiciones de arte e historia de la región.",
             Cost = 30,
-            Energia = -10,
+            Energy = -10,
             TimeMinutes = 120,
             Satisfaction = 200,
             Categories = new[] { PlaceCategory.Cultura, PlaceCategory.Historia}
@@ -33,7 +33,7 @@ public static class PlaceCatalog
             DisplayName = "Catedral",
             Description = "Monumento histórico del centro.",
             Cost = 0,
-            Energia = 0,
+            Energy = 0,
             TimeMinutes = 12,
             Satisfaction = 50,
             Categories = new[] { PlaceCategory.Historia}
@@ -42,7 +42,7 @@ public static class PlaceCatalog
             DisplayName = "Mercado",
             Description = "Artesanías y comida local.",
             Cost = 20,
-            Energia = 0,
+            Energy = 0,
             TimeMinutes = 130,
             Satisfaction = 80,
             Categories = new[] {PlaceCategory.Compras,}
@@ -51,7 +51,7 @@ public static class PlaceCatalog
             DisplayName = "Mercado de artesanos",
             Description = "Artesanías hechas a mano por talleres locales.",
             Cost = 25,
-            Energia = 0,
+            Energy = 0,
             TimeMinutes = 45,
             Satisfaction = 120,
             Categories = new[] { PlaceCategory.Cultura, PlaceCategory.Compras },
@@ -61,7 +61,7 @@ public static class PlaceCatalog
             DisplayName = "Feria de la carne en su jugo",
             Description = "Un clásico de la gastronomía local.",
             Cost = 40,
-            Energia = 100,
+            Energy = 100,
             TimeMinutes = 45,
             Satisfaction = 90,
             Categories = new[] { PlaceCategory.Comida },
@@ -71,7 +71,7 @@ public static class PlaceCatalog
             DisplayName = "Exposición de antigüedades",
             Description = "Piezas históricas de colección.",
             Cost = 15,
-            Energia = 0,
+            Energy = 0,
             TimeMinutes = 60,
             Satisfaction = 100,
             Categories = new[] { PlaceCategory.Historia },

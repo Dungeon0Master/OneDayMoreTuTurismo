@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerMoney : MonoBehaviour
+public class PlayerMoney : MonoBehaviour, ISaveable
 {
     [Header("Configuración de Dinero")]
   
@@ -44,6 +44,25 @@ public class PlayerMoney : MonoBehaviour
         OnMoneyChanged?.Invoke(currentMoney);
     }
 
-    [ContextMenu("Test: gastar 10")]
-    private void TestSpend() => TrySpend(10);
+   [Serializable]
+private class State
+{
+    public int money;
+}
+
+public string SaveKey => "money";
+public int RestoreOrder => 0;
+
+public string CaptureState()
+{
+    return JsonUtility.ToJson(new State { money = currentMoney });
+}
+
+public void RestoreState(string json)
+{
+    State state = JsonUtility.FromJson<State>(json);
+
+    currentMoney = Mathf.Max(0, state.money);
+    OnMoneyChanged?.Invoke(currentMoney);
+}
 }

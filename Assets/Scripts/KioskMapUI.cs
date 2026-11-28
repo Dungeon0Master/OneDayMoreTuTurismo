@@ -20,8 +20,9 @@ public class KioskMapUI : MonoBehaviour
     [Header("Mapa del mundo")]
     [SerializeField] private MapWorldArea worldArea;
     [SerializeField] private Camera mapCamera;
-    [SerializeField] private int pixelsPerUnit = 32;                 // NUEVO (reemplaza textureHeight)
-    [SerializeField] private int maxTextureSize = 4096;              // NUEVO
+    [SerializeField] private int pixelsPerUnit = 32;                
+    [SerializeField] private int maxTextureSize = 4096;            
+     private int closedFrame = -1; 
 
     private readonly List<GameObject> spawnedIcons = new List<GameObject>();
     private RenderTexture mapTexture;
@@ -47,6 +48,7 @@ public class KioskMapUI : MonoBehaviour
         closeButton.onClick.AddListener(Close);
         installAppButton.onClick.AddListener(OnInstallAppClicked);
         mapRoot.SetActive(false);
+        installAppButton.gameObject.SetActive(false);
     }
 
     private void OnDestroy()
@@ -191,4 +193,7 @@ public class KioskMapUI : MonoBehaviour
     {
         detailPanel.Show(place.Info);
     }
+
+    // true si el mapa se cerró en este mismo frame (para que el mismo Esc no abra la pausa)
+    public bool ClosedThisFrame => closedFrame == Time.frameCount;
 }

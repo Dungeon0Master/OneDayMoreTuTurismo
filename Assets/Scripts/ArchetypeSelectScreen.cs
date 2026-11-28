@@ -74,6 +74,7 @@ public class ArchetypeSelectScreen : MonoBehaviour
 
         startButton.interactable = false;   // evita clics dobles mientras carga
 
+        GameSession.StartNewRun();
         GameSession.SelectArchetype(selectedId);
         SceneManager.LoadScene(gameSceneName);
     }

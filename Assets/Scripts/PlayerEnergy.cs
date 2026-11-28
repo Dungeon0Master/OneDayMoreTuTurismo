@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerEnergy : MonoBehaviour
+public class PlayerEnergy : MonoBehaviour, ISaveable
 {
     [Header("Configuración de Energía")]
     [SerializeField] private float maxEnergy = 100f;
@@ -62,4 +62,27 @@ public class PlayerEnergy : MonoBehaviour
     {
         OnEnergyNormalizedChanged?.Invoke(currentEnergy / maxEnergy);
     }
+    [Serializable]
+private class State
+{
+    public float energy;
+    public int exhaustedSteps;
+}
+
+public string SaveKey => "energy";
+public int RestoreOrder => 0;
+
+public string CaptureState()
+{
+    return JsonUtility.ToJson(new State { energy = currentEnergy, exhaustedSteps = exhaustedStepsCounter });
+}
+
+public void RestoreState(string json)
+{
+    State state = JsonUtility.FromJson<State>(json);
+
+    currentEnergy = Mathf.Clamp(state.energy, 0f, maxEnergy);
+    exhaustedStepsCounter = Mathf.Max(0, state.exhaustedSteps);
+    NotifyEnergyChanged();
+}
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 [DefaultExecutionOrder(-100)]
-public class TimeManager : MonoBehaviour
+public class TimeManager : MonoBehaviour, ISaveable
 {
     public static TimeManager Instance { get; private set; }
 
@@ -79,4 +79,28 @@ public class TimeManager : MonoBehaviour
         string formattedTime = $"{hours:00}:{minutes:00}";
         OnTimeFormattedChanged?.Invoke(formattedTime);
     }
+
+    [Serializable]
+private class State
+{
+    public int totalMinutes;
+    public int stepUnits;
+}
+
+public string SaveKey => "time";
+public int RestoreOrder => 0;
+
+public string CaptureState()
+{
+    return JsonUtility.ToJson(new State { totalMinutes = currentTotalMinutes, stepUnits = stepUnitsAccumulator });
+}
+
+public void RestoreState(string json)
+{
+    State state = JsonUtility.FromJson<State>(json);
+
+    currentTotalMinutes = Mathf.Clamp(state.totalMinutes, startHour * 60, endTotalMinutes);
+    stepUnitsAccumulator = Mathf.Clamp(state.stepUnits, 0, 5);
+    NotifyTimeChanged();
+}
 }

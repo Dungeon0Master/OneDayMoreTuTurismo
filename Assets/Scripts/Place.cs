@@ -9,6 +9,13 @@ public class Place : MonoBehaviour, IInteractable
     // Todos los lugares activos de la escena (el mapa del kiosko los usa)
     public static readonly List<Place> All = new List<Place>();
 
+    public string Id => placeId;
+    public bool Used => used;
+
+    public void MarkUsed()
+    {
+        used = true;
+    }
     [Header("Datos")]
     [SerializeField, Delayed] private string placeId;
     [SerializeField] private bool singleUse = true;
@@ -79,7 +86,7 @@ private void ResolveInfo()
     {
         if (info == null) return;
 
-        PlaceUseResult result = TryUse(player.Money, player.Satisfaction, out int gained);
+       PlaceUseResult result = TryUse(player.Money, player.Satisfaction, player.Energy, out int gained);
 
         string message;
         switch (result)
@@ -95,23 +102,34 @@ private void ResolveInfo()
 
     // ---------- Lógica de uso ----------
 
-    public PlaceUseResult TryUse(PlayerMoney money, PlayerSatisfaction satisfaction, out int satisfactionGained)
+    public PlaceUseResult TryUse(PlayerMoney money, PlayerSatisfaction satisfaction, PlayerEnergy energy, out int satisfactionGained)
+        {
+            satisfactionGained = 0;
+
+            if (!CanUse) return PlaceUseResult.AlreadyUsed;
+
+            if (TimeManager.Instance != null && !TimeManager.Instance.HasTimeFor(info.TimeMinutes))
+                return PlaceUseResult.NotEnoughTime;
+
+            if (!money.TrySpend(info.Cost)) return PlaceUseResult.NotEnoughMoney;
+
+            satisfactionGained = satisfaction.AddFromPlace(info);
+            ApplyEnergy(energy);
+
+            if (TimeManager.Instance != null)
+                TimeManager.Instance.AdvanceMinutes(info.TimeMinutes);
+
+            used = true;
+            return PlaceUseResult.Success;
+        }
+
+    private void ApplyEnergy(PlayerEnergy energy)
     {
-        satisfactionGained = 0;
+        if (energy == null || info.Energy == 0) return;
 
-        if (!CanUse) return PlaceUseResult.AlreadyUsed;
-
-        if (TimeManager.Instance != null && !TimeManager.Instance.HasTimeFor(info.TimeMinutes))
-            return PlaceUseResult.NotEnoughTime;
-
-        if (!money.TrySpend(info.Cost)) return PlaceUseResult.NotEnoughMoney;
-
-        satisfactionGained = satisfaction.AddFromPlace(info);
-
-        if (TimeManager.Instance != null)
-            TimeManager.Instance.AdvanceMinutes(info.TimeMinutes);
-
-        used = true;
-        return PlaceUseResult.Success;
+        if (info.Energy > 0)
+            energy.RecoverEnergy(info.Energy);
+        else
+            energy.ConsumeEnergy(-info.Energy);
     }
 }

@@ -9,6 +9,10 @@ public class TentZone : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float spawnChance = 0.5f;
 
+[Tooltip("Identificador estable de la zona para el guardado. Vacío = usa el nombre del objeto.")]
+[SerializeField] private string zoneId;
+
+public string ZoneId => string.IsNullOrEmpty(zoneId) ? name : zoneId;
     public float SpawnChance => spawnChance;
 
     private void OnEnable()

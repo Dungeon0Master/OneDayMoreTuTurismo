@@ -5,6 +5,7 @@ public class PlaceInfoPanel : MonoBehaviour
 {
     [Header("Textos")]
     [SerializeField] private TextMeshProUGUI nameText;
+
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI timeText;
@@ -43,6 +44,7 @@ public class PlaceInfoPanel : MonoBehaviour
         descriptionText.text = info.Description;
         costText.text = info.Cost > 0 ? $"Costo: -${info.Cost}" : "Gratis";
         timeText.text = info.TimeMinutes > 0 ? $"Tiempo: -{UIFormat.Minutes(info.TimeMinutes)}" : "Sin gasto de tiempo";
+  
         messageText.text = message;
 
         UpdatePosition();

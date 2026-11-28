@@ -5,8 +5,15 @@ public static class UIFormat
         int h = minutes / 60;
         int m = minutes % 60;
 
+        
+
         if (h == 0) return $"{m} min";
         if (m == 0) return $"{h} h";
         return $"{h} h {m} min";
+    }
+ 
+    public static string Signed(int value)
+    {
+        return value > 0 ? $"+{value}" : value.ToString();
     }
 }

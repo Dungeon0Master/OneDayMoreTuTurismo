@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerSatisfaction : MonoBehaviour
+public class PlayerSatisfaction : MonoBehaviour, ISaveable
 {
     private int currentSatisfaction;
 
@@ -29,4 +29,25 @@ public class PlayerSatisfaction : MonoBehaviour
         Add(gained);
         return gained;
     }
+    [Serializable]
+private class State
+{
+    public int satisfaction;
+}
+
+public string SaveKey => "satisfaction";
+public int RestoreOrder => 0;
+
+public string CaptureState()
+{
+    return JsonUtility.ToJson(new State { satisfaction = currentSatisfaction });
+}
+
+public void RestoreState(string json)
+{
+    State state = JsonUtility.FromJson<State>(json);
+
+    currentSatisfaction = state.satisfaction;
+    OnSatisfactionChanged?.Invoke(currentSatisfaction);
+}
 }

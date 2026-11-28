@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISaveable
 {
     [Header("Configuración de Velocidad")]
     public float walkSpeed = 5f;
@@ -166,4 +166,42 @@ private void Update()
         Vector2 origen = Application.isPlaying ? puntoMovimiento : (Vector2)transform.position;
         Gizmos.DrawWireSphere(origen + input + offsetPuntoMovimiento, radioColision);
     }
+    public bool IsMoving => isMoving;
+
+[Serializable]
+private class State
+{
+    public float x;
+    public float y;
+    public int facing;
+    public bool flipX;
+}
+
+public string SaveKey => "player";
+public int RestoreOrder => 0;
+
+public string CaptureState()
+{
+    // Se guarda la casilla de destino (centro de casilla); el guardado solo se permite con el personaje quieto
+    return JsonUtility.ToJson(new State
+    {
+        x = puntoMovimiento.x,
+        y = puntoMovimiento.y,
+        facing = (int)direccionActual,
+        flipX = spriteRenderer.flipX,
+    });
+}
+
+public void RestoreState(string json)
+{
+    State state = JsonUtility.FromJson<State>(json);
+
+    Vector2 position = new Vector2(state.x, state.y);
+    transform.position = position;
+    puntoMovimiento = position;
+    isMoving = false;
+
+    direccionActual = (Direccion)Mathf.Clamp(state.facing, 0, 2);
+    spriteRenderer.flipX = state.flipX;
+}
 }

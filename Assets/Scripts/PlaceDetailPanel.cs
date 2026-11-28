@@ -7,6 +7,7 @@ public class PlaceDetailPanel : MonoBehaviour
     [Header("Textos")]
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private TextMeshProUGUI energyText;  
     [SerializeField] private TextMeshProUGUI satisfactionText;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI costText;
@@ -26,6 +27,8 @@ public class PlaceDetailPanel : MonoBehaviour
         satisfactionText.text = $"+{GameSession.Archetype.CalculateSatisfaction(info)}";
         timeText.text = info.TimeMinutes > 0 ? $"-{UIFormat.Minutes(info.TimeMinutes)}" : "0";
         costText.text = info.Cost > 0 ? $"-{info.Cost}" : "0";
+        if (energyText != null)
+           energyText.text = UIFormat.Signed(info.Energy);
 
         ShowCategories(info.Categories);
 
